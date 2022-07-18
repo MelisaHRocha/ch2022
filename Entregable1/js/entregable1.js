@@ -35,10 +35,13 @@ function Menu(){
             costoTotal+=parseFloat(Cocina());
             Menu();
             break;   
-        case '4':
-            
+        case '4':          
             console.log('El costo Total de la Construcción de tu casa es de: '+costoTotal.toFixed(2)+ ' $');
             break; 
+
+        default:
+            console.log('La opción seleccionada no es válida.');
+            break;
     }
 
 }
