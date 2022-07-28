@@ -159,7 +159,6 @@ function Cocina(){
         }
     }
 
-    var CCO = 0; // CCO= costo de cocina
     var CTC = 0; // CTH= costo total de cocinas
 
     let cocinasCant = prompt('Ingrese la cantidad de Cocinas que desea construir:');
@@ -217,7 +216,7 @@ function costoConstrucción(locacion){
     const costoPorM2 = '20';  // Costos de material de construcción por M2.
     locacion.costoMaterialConstrucción = multiplica(costoPorM2,locacion.M2); // Costo de Construcción.
     locacion.costoManoObraConstrucción =multiplica(costoAlbañilM2(locacion.M2),CAPH); // Costo de Mano de Obra de Albañileria
-    locacion.costoConstruccion =suma(locacion.costoMaterialConstrucción,locacion.costoManoObraConstrucción);  // CTNC =Costo Total de Construcción
+    locacion.costoConstruccion =suma(locacion.costoMaterialConstrucción,locacion.costoManoObraConstrucción);  
     return (locacion.costoConstruccion);
 
 }

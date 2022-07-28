@@ -20,7 +20,7 @@ Menu();
 
 function Menu(){
 
-    let opción= prompt('Agrega locaciones a  tu casa o costrucción:: \n  1). Habitación \n  2). Baño \n  3). Cocina \n  4). Finalizar');
+    let opción= prompt('Agrega locaciones a  tu casa o construcción:: \n  1). Habitación \n  2). Baño \n  3). Cocina \n  4). Finalizar');
 
     switch (opción){
         case '1':
