@@ -120,7 +120,7 @@ function EditarLocacion(){
 
     if (locaciones.length>0) {
        locaciones.forEach(locacion => {
-           let op = prompt('Su Casa tiene por el momento: ' + locacion.cantidad + ' ' + locacion.tipo + '/s.  \n Desea modificarlo ? \n 1).Si \n 2).No'); 
+           let op = prompt('Su casa tiene por el momento: ' + locacion.cantidad + ' ' + locacion.tipo + '/s.\nDesea modificarla ? \n 1). Si \n 2). No'); 
            switch (op){
             case '1':
                 ModificarLocacion(locacion.tipo);
