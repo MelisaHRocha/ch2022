@@ -103,15 +103,12 @@ function AgregarLocacion(){
     switch (opción){
         case '1':
             CalculoHabitación();          
-            Menu();
             break;                       
         case '2':
             CalculoBaño();
-            Menu();
             break;
         case '3':
             CalculoCocina();
-            Menu();
             break;   
         default:
             console.log('La opción seleccionada no es válida.');
@@ -161,16 +158,34 @@ function FiltrarLocacion(){
 function ModificarLocacion(tipo){
     switch (tipo){
         case 'Habitación':
-            let numeroHabitación = prompt("Ingrese el numero de Habitación que desea editar (Ej: 0 es la Habitación n°0 )"); 
-            ModificarHabitación(numeroHabitación);
-            break;                       
+           
+            const habitacionesAMostrar = habitaciones.map((hb)=>hb.nombre);
+            let habitacionesNombres = habitacionesAMostrar.join(" , ");
+            let numeroHabitación = parseInt(prompt("Sa casa tiene las siguientes habitacion/es: " +habitacionesNombres+ "\n Ingrese el numero de Habitación que desea editar: ")); 
+            
+            if(habitacionesNombres.includes(numeroHabitación)){ModificarHabitación(numeroHabitación);}
+            else{alert('La opción seleccionada no es válida.');};           
+            break; 
+
         case 'Baño':
-            let numeroBaño = prompt("Ingrese el numero de Baño que desea editar (Ej: 0 es el Baño n°0. )"); 
-            ModificarBaño(numeroBaño);
+  
+            const bañosAMostrar = baños.map((bñ)=>bñ.nombre);
+            let bañosNombres = bañosAMostrar.join(" , ");
+            let numeroBaño = parseInt(prompt("Sa casa tiene los siguientes baño/s: " +bañosNombres+ "\n Ingrese el numero de Baño que desea editar: ")); 
+            
+            if(bañosNombres.includes(numeroBaño)){ModificarBaño(numeroBaño);}
+            else{alert('La opción seleccionada no es válida.');};                   
             break;
+
         case 'Cocina':
-            let numeroCocina = prompt("Ingrese el numero de Cocina que desea editar (Ej: 0 es la Cocina n°0. )"); 
-            ModificarCocina(numeroCocina);
+
+            const cocinasAMostrar = baños.map((bñ)=>bñ.nombre);
+            let cocinasNombres = bañosAMostrar.join(" , ");
+            let numeroCocina = parseInt(prompt("Sa casa tiene los siguientes cocina/s: " +cocinasNombres+ "\n Ingrese el numero de Baño que desea editar: ")); 
+            
+            if(cocinasNombres.includes(numeroCocina)){ ModificarCocina(numeroCocina);}
+            else{alert('La opción seleccionada no es válida.');}; 
+
             break
     }
     
@@ -190,7 +205,6 @@ function ModificarHabitación(numeroHabitación){
             console.log('La opción seleccionada no es válida.');
             break;
     }
-
 }
 
 function ModificarBaño(numeroBaño){
@@ -206,7 +220,6 @@ function ModificarBaño(numeroBaño){
             console.log('La opción seleccionada no es válida.');
             break;
     }
-
 }
 
 function ModificarCocina(numeroCocina){
@@ -222,7 +235,6 @@ function ModificarCocina(numeroCocina){
             console.log('La opción seleccionada no es válida.');
             break;
     }
-
 }
 
 function EliminarHabitación(numeroHabitación) {
@@ -230,8 +242,7 @@ function EliminarHabitación(numeroHabitación) {
     let  habitacionAEliminar = habitaciones.find((hb) => hb.nombre == numeroHabitación);
     habitaciones.splice(habitaciones.indexOf(habitacionAEliminar),1);
     alert("Usted ha eliminado la Habitación n°: " + habitacionAEliminar.nombre);
-    console.log('Actualmente tiene ésta/s habitacion/es y costo/s: ');   
-    
+    console.log('Actualmente tiene ésta/s habitacion/es y costo/s: ');     
 }
 
 function EliminarBaño(numeroBaño) {
@@ -266,6 +277,7 @@ function EditarHabitación(numeroHabitación){
     console.log("Numero de Habitacion a Editar es " +numeroHabitación)
     let  habitacionAEditar = habitaciones.find((hb) => hb.nombre == numeroHabitación);
     nuevaM2 = prompt("La Habitación que desea editar tiene actualmente: " +habitacionAEditar.M2+ " m2 \nIngrese una nueva cantidad de m2: ");
+    cocinaAEditar.M2 = nuevaM2;
     habitacionAEditar.costoTotal = parseFloat(costoHabitación(habitacionAEditar).toFixed(2));
     alert("Ahora la Habitación n°: " + habitacionAEditar.nombre+ " tiene : " + nuevaM2+ " m2 \n y  tiene un costo total de: " +habitacionAEditar.costoTotal+ " $");   
     LocacionActualizada(habitacionAEditar);
@@ -275,6 +287,7 @@ function EditarBaño(numeroBaño){
     console.log("Numero de Baño a Editar es " +numeroBaño)
     let  bañoAEditar = baños.find((hb) => hb.nombre == numeroBaño);
     nuevaM2 = prompt("El Baño que desea editar tiene actualmente: " +bañoAEditar.M2+ " m2 \nIngrese una nueva cantidad de m2: ");
+    bañoAEditar.M2 = nuevaM2;
     bañoAEditar.costoTotal = parseFloat(costoBaño(bañoAEditar).toFixed(2));
     alert("Ahora el Baño n°: " + bañoAEditar.nombre+ " tiene : " + nuevaM2+ " m2 \n y  tiene un costo total de: " +bañoAEditar.costoTotal+ " $");      
     LocacionActualizada(bañoAEditar);    
@@ -284,6 +297,7 @@ function EditarCocina(numeroCocina){
     console.log("Número de Cocina a Editar es " +numeroCocina)
     let  cocinaAEditar = cocinas.find((hb) => hb.nombre == numeroCocina);
     nuevaM2 = prompt("La cocina que desea editar tiene actualmente: " +cocinaAEditar.M2+ " m2 \nIngrese una nueva cantidad de m2: ");
+    cocinaEditar.M2 = nuevaM2;
     cocinaAEditar.costoTotal = parseFloat(costoCocina(cocinaAEditar).toFixed(2));
     alert("Ahora la cocina n°: " + cocinaAEditar.nombre+ " tiene : " + nuevaM2+ " m2 \n y  tiene un costo total de: " +cocinaAEditar.costoTotal+ " $");    
     LocacionActualizada(cocinaAEditar);
@@ -367,8 +381,7 @@ function CalculoCocina(){
     nuevaLocacion = new Locación("Cocina",cocinasCant);
     locaciones.push(nuevaLocacion);
 
-    do {
-        
+    do {   
         let cantidadM2 = parseFloat(prompt('Ingrese la cantidad de metros cuadrados que tiene la cocina n°' + (cocinas.length)  + ': '));          
         var nuevaCocina = new Cocina();
         nuevaCocina.M2 =cantidadM2;
@@ -389,7 +402,6 @@ function CalculoCocina(){
     return CTC;
     
 }
-
 
 /** Locaciones Mayores a : */
 
@@ -520,8 +532,6 @@ function locacionesIgualesA(){
         console.log('No existen Cocinas iguales a: ' +cantidad+ '$');
     }
 }
-
-
 
 function costoHabitación(habitacion){
     habitacion.costoConstruccion = costoConstrucción(habitacion);  
