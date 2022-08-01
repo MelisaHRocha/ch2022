@@ -269,16 +269,18 @@ function  CálculoPresupuestoTotal(){
     for (const locacion of locaciones) {
         costoTotal += locacion.costoTotal;
     }
-    console.log('*** El Costo Total de Presupuesto es de: ' +costoTotal+ ' $');
+    console.log('*** El Costo Total de Presupuesto es de: ' +costoTotal.toFixed(2)+ ' $');
+
+    ListarLocaciones();
 }
 
 function EditarHabitación(numeroHabitación){
     console.log("Numero de Habitacion a Editar es " +numeroHabitación)
     let  habitacionAEditar = habitaciones.find((hb) => hb.nombre == numeroHabitación);
     nuevaM2 = prompt("La Habitación que desea editar tiene actualmente: " +habitacionAEditar.M2+ " m2 \nIngrese una nueva cantidad de m2: ");
-    cocinaAEditar.M2 = nuevaM2;
+    habitacionAEditar.M2 = nuevaM2;
     habitacionAEditar.costoTotal = parseFloat(costoHabitación(habitacionAEditar).toFixed(2));
-    alert("Ahora la Habitación n°: " + habitacionAEditar.nombre+ " tiene : " + nuevaM2+ " m2 \n y  tiene un costo total de: " +habitacionAEditar.costoTotal+ " $");   
+    alert("Ahora la Habitación n°: " + habitacionAEditar.nombre+ " tiene : " + nuevaM2+ " m2 \n y  tiene un costo total de: " +habitacionAEditar.costoTotal.toFixed(2)+ " $");   
     LocacionActualizada(habitacionAEditar);
 }
 
@@ -310,16 +312,27 @@ function LocacionActualizada(locacion){
     console.log('Costo Total de construcción es de:' +locacion.costoTotal.toFixed(2) + ' $');
 }
 
+var habitacionesCant = 0;
+
+
 function CalculoHabitación(){
 
     var CTH = 0; // CTH = costo total de habitaciones.
 
-    let habitacionesCant = prompt('Ingrese cantidad de Habitaciones que desea construir:');
-    nuevaLocacion = new Locación("Habitación",habitacionesCant);
-    locaciones.push(nuevaLocacion);
+    let habitacionesCant = parseInt(prompt('Ingrese cantidad de Habitaciones que desea construir:'));
+    
+    if(locaciones.some((lo)=> lo.tipo == "Habitación")){
 
-    do {
-        
+       var locacionSelec = locaciones.find((lo)=> lo.tipo == "Habitación")
+       locacionSelec.cantidad += habitacionesCant;
+
+    }else{
+        nuevaLocacion = new Locación("Habitación",habitacionesCant);
+        locaciones.push(nuevaLocacion);
+    }
+
+
+   for (let i = 0; i < habitacionesCant; i++) {
         let cantidadM2 = parseFloat(prompt('Ingrese la cantidad de metros cuadrados que tiene la habitación n°' + (habitaciones.length)  + ': '));          
         var nuevaHabitacion = new Habitación();
         nuevaHabitacion.M2 = cantidadM2;       
@@ -327,14 +340,11 @@ function CalculoHabitación(){
         nuevaHabitacion.nombre = habitaciones.indexOf(nuevaHabitacion);
         
         nuevaHabitacion.costoTotal = parseFloat(costoHabitación(nuevaHabitacion).toFixed(2));
-
-    } while (habitaciones.length < habitacionesCant)
-
-    for (const habitacion of habitaciones) {
-        CTH += habitacion.costoTotal;
-    }
-
-    ListarHabitaciones();
+        CTH += nuevaHabitacion.costoTotal;
+        
+   }
+   
+    ListarHabitacionesCargadas((habitaciones.length - habitacionesCant),habitacionesCant+1);
        
     console.log('El Costo Total de construcción para '+habitacionesCant+ ' habitacion/es es de : ' +CTH.toFixed(2)+ ' $');
     return CTH;
@@ -345,27 +355,28 @@ function CalculoBaño(){
 
     var CTB = 0; // CTB= costo total de baños
     
-    let bañosCant = prompt('Ingrese la cantidad de Baños que desea construir:');
-    nuevaLocacion = new Locación("Baño",bañosCant);
-    locaciones.push(nuevaLocacion);
+    let bañosCant = parseInt(prompt('Ingrese la cantidad de Baños que desea construir:'));
+    
+    if(locaciones.some((lo)=> lo.tipo == "Baño")){
+        var locacionSelec = locaciones.find((lo)=> lo.tipo == "Baño")
+        locacionSelec.cantidad += bañosCant;
+     }else{
+        nuevaLocacion = new Locación("Baño",bañosCant);
+        locaciones.push(nuevaLocacion);
+     }
 
-    do {
-        
+    for (let i = 0; i < bañosCant; i++) {
         let cantidadM2 = parseFloat(prompt('Ingrese la cantidad de metros cuadrados que tiene el baño n°' + (baños.length)  + ': '));          
         var nuevoBaño = new Baño();
-        nuevoBaño.M2 = cantidadM2;
+        nuevoBaño.M2 = cantidadM2;       
         baños.push(nuevoBaño);
         nuevoBaño.nombre = baños.indexOf(nuevoBaño);
-      
+        
         nuevoBaño.costoTotal = parseFloat(costoBaño(nuevoBaño).toFixed(2));
-
-    } while (baños.length < bañosCant)
-    
-    for (const baño of baños) {
-        CTB += baño.costoTotal;
+        CTB += nuevoBaño.costoTotal;
     }
 
-    ListarBaños();
+    ListarBaños((baños.length - bañosCant),bañosCant+1);
        
     console.log('El Costo Total de construcción para '+bañosCant+ ' baños/s es de : ' +CTB.toFixed(2)+ ' $');
     return CTB;
@@ -376,28 +387,32 @@ function CalculoCocina(){
 
     var CTC = 0; // CTH= costo total de cocinas
 
-    let cocinasCant = prompt('Ingrese la cantidad de Cocinas que desea construir:');
-    nuevaLocacion = new Locación("Cocina",cocinasCant);
-    locaciones.push(nuevaLocacion);
+    let cocinasCant = parseInt(prompt('Ingrese la cantidad de Cocinas que desea construir:'));
+    
+    if(locaciones.some((lo)=> lo.tipo == "Cocina")){
+        var locacionSelec = locaciones.find((lo)=> lo.tipo == "Cocina")
+        locacionSelec.cantidad += cocinasCant;
+     }else{
+        nuevaLocacion = new Locación("Cocina",cocinasCant);
+        locaciones.push(nuevaLocacion);
+     }
 
-    do {   
+
+    for (let i = 0; i < cocinasCant; i++) {
         let cantidadM2 = parseFloat(prompt('Ingrese la cantidad de metros cuadrados que tiene la cocina n°' + (cocinas.length)  + ': '));          
         var nuevaCocina = new Cocina();
-        nuevaCocina.M2 =cantidadM2;
+        nuevaCocina.M2 = cantidadM2;       
         cocinas.push(nuevaCocina);
         nuevaCocina.nombre = cocinas.indexOf(nuevaCocina);
         
         nuevaCocina.costoTotal = parseFloat(costoCocina(nuevaCocina).toFixed(2));
+        CTC += nuevaCocina.costoTotal;
 
-    } while (cocinas.length < cocinasCant)
-
-    for (const cocina of cocinas) {
-        CTC += cocina.costoTotal;
     }
 
-    ListarCocinas();
+    ListarCocinas((cocinas.length - cocinasCant),cocinasCant+1);
        
-    console.log('El Costo Total de construcción para '+cocinasCant+ ' habitacion/es es de : ' +CTC.toFixed(2)+ ' $');
+    console.log('El Costo Total de construcción para '+cocinasCant+ ' cocina/as es de : ' +CTC.toFixed(2)+ ' $');
     return CTC;
     
 }
@@ -581,10 +596,79 @@ function costoPlomería(locacion){
     return(locacion.costoPlomería);
 }
 
-function ListarHabitaciones(){
-    console.log('***** Costos de Habitacion/es:');
+function ListarLocaciones(){
+    console.log('***** Costos de Locación/es:');
 
-    for (const habitacion of habitaciones){
+    for (const locacion of locaciones) {
+        if(locacion.tipo == 'Habitación'){
+            
+        var habitacionesCont = document.getElementById("habitacionesRoot");
+        habitacionesCont.innerHTML = `<h2>Habitaciones de tu Casa:</h2>`;
+        const divHabitación = document.createElement("div");
+        divHabitación.classList.add("habitacion");
+
+            for (const habitacion of habitaciones){
+           
+                divHabitación.innerHTML += `
+                <li> Habitación: ${habitacion.nombre}: <strong>${habitacion.M2}</strong> m2 </li>`
+      
+            }
+
+        habitacionesCont.appendChild(divHabitación);
+
+        }
+
+        if(locacion.tipo == 'Baño'){
+        var bañosCont = document.getElementById("baños");
+        bañosCont.innerHTML = `<h2>Baños de tu Casa:</h2>`;
+        const divBaño = document.createElement("div");
+        divBaño.classList.add("baño");
+
+            for (const baño of baños){
+
+                divBaño.innerHTML += `
+                <li> Baño: ${baño.nombre}: <strong>${baño.M2}</strong> m2 </li>`               
+
+            }
+
+        bañosCont.appendChild(divBaño);
+
+        }
+
+        if(locacion.tipo == 'Cocina'){
+
+        var cocinasCont = document.getElementById("cocinas");
+        cocinasCont.innerHTML = `<h2>Cocinas de tu Casa:</h2>`;
+        const divCocina = document.createElement("div");
+        divCocina.classList.add("cocina");
+
+            for (const cocina of cocinas){
+            
+                divCocina.innerHTML += `
+                <li> Cocina: ${cocina.nombre}: <strong>${cocina.M2}</strong> m2 </li>`
+       
+            }
+
+        cocinasCont.appendChild(divCocina);
+
+        }
+    }
+
+    const locacionesLista = document.getElementsByTagName('li');
+  
+    for (let i = 0; i < locacionesLista.length; i++) {
+        locacionesLista[i].className = 'azul';
+        
+    }
+
+    
+}
+
+function ListarHabitacionesCargadas(habitDesde,habitHasta){
+    console.log('***** Costos de Habitacion/es:');
+    const habitacionesCargadas = habitaciones.slice(habitDesde,habitHasta)
+
+    for (const habitacion of habitacionesCargadas){
        
         console.log('Costos para ' +habitacion.tipo+ ' n° '+ habitaciones.indexOf(habitacion)+ ': ');
         console.log('Costo de material de construcción es de:' + habitacion.costoMaterialConstrucción.toFixed(2)+ ' $');
@@ -593,11 +677,14 @@ function ListarHabitaciones(){
         console.log('Costo Total de construcción es de:' +habitacion.costoTotal.toFixed(2) + ' $');
     }
 }
+    
 
-function ListarBaños(){
+
+function ListarBaños(bañosDesde,bañosHasta){
     console.log('***** Costos de Baño/s:');
-
-    for (const baño of baños){
+    const bañosCargados = baños.slice(bañosDesde,bañosHasta)
+  
+    for (const baño of bañosCargados){
        
         console.log('Costos para ' +baño.tipo+ ' n° '+ baños.indexOf(baño)+ ': ');
         console.log('Costo de material de construcción es de:' + baño.costoMaterialConstrucción.toFixed(2)+ ' $');
@@ -607,9 +694,11 @@ function ListarBaños(){
     }
 }
 
-function ListarCocinas(){
+function ListarCocinas(cocinasDesde,cocinasHasta){
     console.log('***** Costos de Cocina/s:');
-    for (const cocina of cocinas){
+    const cocinasCargadas = cocinas.slice(cocinasDesde,cocinasHasta)
+
+    for (const cocina of cocinasCargadas){
        
         console.log('Costos para ' +cocina.tipo+ ' n° '+ cocinas.indexOf(cocina)+ ': ');
         console.log('Costo de material de construcción es de:' + cocina.costoMaterialConstrucción.toFixed(2)+ ' $');

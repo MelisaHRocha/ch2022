@@ -1,0 +1,11 @@
+body{
+    background-color:aquamarine;
+}
+
+li{
+    color:blueviolet;
+}
+
+li.azul{
+    color:blue;
+}
