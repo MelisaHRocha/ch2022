@@ -330,14 +330,11 @@ function CalculoHabitación(locacion){
 
     var nuevaHabitacion = new Habitación();     
     habitaciones.push(nuevaHabitacion);
-    nuevaHabitacion.nombre = habitaciones.indexOf(nuevaHabitacion);
-    
-   
+    nuevaHabitacion.nombre = habitaciones.indexOf(nuevaHabitacion);  
 
     const locacionesContenedor = document.getElementById("locacionesRoot");
     locacionesContenedor.innerHTML = "";
-
-    
+  
     locacionesContenedor.innerHTML = `
     <h2>Habitacion: ${nuevaHabitacion.nombre}</h2>
     <img src="${locacion.imagen}" alt="${locacion.nombre}">`
@@ -358,15 +355,12 @@ function CalculoHabitación(locacion){
 }
 
 function calcularCostoLocación(M2Input,divLocacion,nuevaLocacion){
+    
     M2Input.addEventListener("keypress", function(event)
-
     {
       if(event.keyCode === 13){
-      console.log("imprime listner " +M2Input.value)
       nuevaLocacion.M2 = M2Input.value; 
-      console.log("Metros cuadrados de nueva habitación: "+nuevaLocacion.M2);
       nuevaLocacion.costoTotal = parseFloat(costoHabitación(nuevaLocacion).toFixed(2));
-      console.log("costo total de habitacion: "+nuevaLocacion.costoTotal);
       divLocacion.innerHTML = "";
 
       divLocacion.innerHTML += `
