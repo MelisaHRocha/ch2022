@@ -355,7 +355,7 @@ function CalculoHabitación(locacion){
 }
 
 function calcularCostoLocación(M2Input,divLocacion,nuevaLocacion){
-    
+
     M2Input.addEventListener("keypress", function(event)
     {
       if(event.keyCode === 13){
@@ -367,6 +367,7 @@ function calcularCostoLocación(M2Input,divLocacion,nuevaLocacion){
            <h2>CostoTotal: ${nuevaLocacion.costoTotal.toFixed(2)}</h2>`;
 
       crearBotonVolver();
+      crearBotonEditar(nuevaLocacion);
       }
         
     });      
@@ -383,6 +384,107 @@ function crearBotonVolver(){
         )
     document.getElementById("locacionesRoot").appendChild(botonVolver);
 }
+
+
+function crearBotonEditar(locacion){
+    const botonEditar = document.createElement("button");
+    botonEditar.classList.add("boton-editar");
+    botonEditar.innerText = "Editar";
+    botonEditar.addEventListener("click",() =>{
+        EditarLocacionB(locacion);
+        } 
+        )
+    document.getElementById("locacionesRoot").appendChild(botonEditar);
+}
+
+function EditarLocacionB(locacion){
+
+    let  superLocacion = locaciones.find((lo) => lo.tipo == locacion.tipo);
+
+    if(superLocacion.tipo == "Habitación"){
+
+    console.log("Numero de Habitacion a Editar es " +locacion.nombre)
+    let  habitacionAEditar = habitaciones.find((hb) => hb.nombre == locacion.nombre);
+    
+
+    const locacionesContenedor = document.getElementById("locacionesRoot");
+    locacionesContenedor.innerHTML = "";
+  
+    locacionesContenedor.innerHTML = `
+    <h2>Habitacion: ${habitacionAEditar.nombre}</h2>
+    <img src="${superLocacion.imagen}" alt="${habitacionAEditar.nombre}">`
+  
+    const divHabitación = document.createElement("div");
+    divHabitación.classList.add("habitacion");
+
+    divHabitación.innerHTML =`
+    <h3>Cantidad de M2: <input type="text" id='m2'/><h3>`;
+
+    locacionesContenedor.appendChild(divHabitación);
+
+    const M2Input = document.getElementById('m2')
+
+    calcularCostoLocación(M2Input,divHabitación,habitacionAEditar);
+    }else 
+    
+    if(superLocacion.tipo == "Baño"){
+
+    console.log("Numero de Baño a Editar es " +locacion.nombre)
+    let  bañoAEditar = baños.find((bñ) => bñ.nombre == locacion.nombre);
+
+    const locacionesContenedor = document.getElementById("locacionesRoot");
+    locacionesContenedor.innerHTML = "";
+    
+    locacionesContenedor.innerHTML = `
+    <h2>Baño: ${bañoAEditar.nombre}</h2>
+    <img src="${superLocacion.imagen}" alt="${bañoAEditar.nombre}">`
+    
+    const divBaño = document.createElement("div");
+    divBaño.classList.add("baño");
+
+    divBaño.innerHTML =`
+    <h3>Cantidad de M2: <input type="text" id='m2'/><h3>`;
+
+    locacionesContenedor.appendChild(divBaño);
+
+    const M2Input = document.getElementById('m2')
+
+    calcularCostoLocación(M2Input,divBaño,bañoAEditar);
+
+
+    }
+
+    if(superLocacion.tipo == "Cocina"){
+
+    console.log("Numero de Cocina a Editar es " +locacion.nombre)
+    let  cocinaAEditar = baños.find((bñ) => bñ.nombre == locacion.nombre);
+
+    const locacionesContenedor = document.getElementById("locacionesRoot");
+    locacionesContenedor.innerHTML = "";
+    
+    locacionesContenedor.innerHTML = `
+    <h2>Cocina: ${cocinaAEditar.nombre}</h2>
+    <img src="${superLocacion.imagen}" alt="${cocinaAEditar.nombre}">`
+    
+    const divBaño = document.createElement("div");
+    divBaño.classList.add("baño");
+
+    divBaño.innerHTML =`
+    <h3>Cantidad de M2: <input type="text" id='m2'/><h3>`;
+
+    locacionesContenedor.appendChild(divBaño);
+
+    const M2Input = document.getElementById('m2')
+
+    calcularCostoLocación(M2Input,divBaño,cocinaAEditar);
+
+
+    }
+    
+
+
+}
+
 
 function CalculoBaño(locacion){
 
