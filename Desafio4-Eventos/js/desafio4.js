@@ -332,7 +332,7 @@ function CalculoHabitación(locacion){
     habitaciones.push(nuevaHabitacion);
     nuevaHabitacion.nombre = habitaciones.indexOf(nuevaHabitacion);  
 
-    const locacionesContenedor = document.getElementById("locacionesRoot");
+    const locacionesContenedor = document.querySelector(".locacionesRoot");
     locacionesContenedor.innerHTML = "";
   
     locacionesContenedor.innerHTML = `
@@ -382,7 +382,7 @@ function crearBotonVolver(){
         ListarLocaciones();
         } 
         )
-    document.getElementById("locacionesRoot").appendChild(botonVolver);
+    document.querySelector(".locacionesRoot").appendChild(botonVolver);
 }
 
 
@@ -394,7 +394,7 @@ function crearBotonEditar(locacion){
         EditarLocacionB(locacion);
         } 
         )
-    document.getElementById("locacionesRoot").appendChild(botonEditar);
+    document.querySelector(".locacionesRoot").appendChild(botonEditar);
 }
 
 function EditarLocacionB(locacion){
@@ -407,7 +407,7 @@ function EditarLocacionB(locacion){
     let  habitacionAEditar = habitaciones.find((hb) => hb.nombre == locacion.nombre);
     
 
-    const locacionesContenedor = document.getElementById("locacionesRoot");
+    const locacionesContenedor = document.querySelector(".locacionesRoot");
     locacionesContenedor.innerHTML = "";
   
     locacionesContenedor.innerHTML = `
@@ -432,7 +432,7 @@ function EditarLocacionB(locacion){
     console.log("Numero de Baño a Editar es " +locacion.nombre)
     let  bañoAEditar = baños.find((bñ) => bñ.nombre == locacion.nombre);
 
-    const locacionesContenedor = document.getElementById("locacionesRoot");
+    const locacionesContenedor = document.querySelector(".locacionesRoot");
     locacionesContenedor.innerHTML = "";
     
     locacionesContenedor.innerHTML = `
@@ -459,7 +459,7 @@ function EditarLocacionB(locacion){
     console.log("Numero de Cocina a Editar es " +locacion.nombre)
     let  cocinaAEditar = baños.find((bñ) => bñ.nombre == locacion.nombre);
 
-    const locacionesContenedor = document.getElementById("locacionesRoot");
+    const locacionesContenedor = document.querySelector(".locacionesRoot");
     locacionesContenedor.innerHTML = "";
     
     locacionesContenedor.innerHTML = `
@@ -493,7 +493,7 @@ function CalculoBaño(locacion){
     baños.push(nuevoBaño);
     nuevoBaño.nombre = baños.indexOf(nuevoBaño);
     
-    const locacionesContenedor = document.getElementById("locacionesRoot");
+    const locacionesContenedor = document.querySelector(".locacionesRoot");
     locacionesContenedor.innerHTML = "";
   
     locacionesContenedor.innerHTML = `
@@ -520,7 +520,7 @@ function CalculoCocina(locacion){
     cocinas.push(nuevaCocina);
     nuevaCocina.nombre = cocinas.indexOf(nuevaCocina);
     
-    const locacionesContenedor = document.getElementById("locacionesRoot");
+    const locacionesContenedor = document.querySelector(".locacionesRoot");
     locacionesContenedor.innerHTML = "";
   
     locacionesContenedor.innerHTML = `
@@ -724,7 +724,7 @@ function costoPlomería(locacion){
 
 function ListarLocaciones(){
 
-    const locacionesContenedor = document.getElementById("locacionesRoot");
+    const locacionesContenedor = document.querySelector(".locacionesRoot");
     locacionesContenedor.innerHTML ="";
 
     for (const locacion of locaciones) {
@@ -738,6 +738,7 @@ function ListarLocaciones(){
         <img src="${locacion.imagen}" alt="${locacion.nombre}"><br>`;
 
         const botonAgregar = document.createElement("button");
+        botonAgregar.classList.add("boton-agregar");
         botonAgregar.innerText = "Agregar";
        
         botonAgregar.addEventListener("click", () => {
@@ -757,6 +758,7 @@ function ListarLocaciones(){
         <img src="${locacion.imagen}" alt="${locacion.nombre}"><br>`;
 
         const botonAgregar = document.createElement("button");
+        botonAgregar.classList.add("boton-agregar");
         botonAgregar.innerText = "Agregar";
        
         botonAgregar.addEventListener("click", () => {
@@ -776,6 +778,7 @@ function ListarLocaciones(){
         <img src="${locacion.imagen}" alt="${locacion.nombre}"><br>`;
 
         const botonAgregar = document.createElement("button");
+        botonAgregar.classList.add("boton-agregar");
         botonAgregar.innerText = "Agregar";
        
         botonAgregar.addEventListener("click", () => {
