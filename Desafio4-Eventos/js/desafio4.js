@@ -107,6 +107,7 @@ function Menu(){
     }
 }
 
+
 function AgregarLocacion(){
   
     let opción= prompt('Agrega locaciones a  tu casa o construcción: \n  1). Habitación \n  2). Baño \n  3). Cocina \n ');
@@ -326,6 +327,78 @@ function LocacionActualizada(locacion){
 var habitacionesCant = 0;
 
 
+function ListarLocaciones(){
+
+    const locacionesContenedor = document.querySelector(".locacionesRoot");
+    locacionesContenedor.innerHTML ="";
+
+    for (const locacion of locaciones) {
+        
+        if(locacion.tipo == 'Habitación'){
+            
+        const divHabitación = document.createElement("div");
+        divHabitación.classList.add("habitacion");   
+
+        divHabitación.innerHTML = `<h2>Habitaciones:</h2>
+        <img src="${locacion.imagen}" alt="${locacion.nombre}"><br>`;
+
+        const botonAgregar = document.createElement("button");
+        botonAgregar.classList.add("boton-agregar");
+        botonAgregar.innerText = "Agregar";
+       
+        botonAgregar.addEventListener("click", () => {
+         CalculoHabitación(locacion);
+        })
+
+        divHabitación.appendChild(botonAgregar);
+        locacionesContenedor.appendChild(divHabitación);
+        }
+
+       
+        if(locacion.tipo == 'Baño'){
+        
+        const divBaño = document.createElement("div");
+        divBaño.classList.add("baño");     
+        divBaño.innerHTML = `<h2>Baños:</h2>
+        <img src="${locacion.imagen}" alt="${locacion.nombre}"><br>`;
+
+        const botonAgregar = document.createElement("button");
+        botonAgregar.classList.add("boton-agregar");
+        botonAgregar.innerText = "Agregar";
+       
+        botonAgregar.addEventListener("click", () => {
+         CalculoBaño(locacion);
+        })
+
+        divBaño.appendChild(botonAgregar);
+        locacionesContenedor.appendChild(divBaño);
+
+        }
+    
+        if(locacion.tipo == 'Cocina'){
+
+        const divCocina = document.createElement("div");
+        divCocina.classList.add("cocina");
+        divCocina.innerHTML = `<h2>Cocinas:</h2>
+        <img src="${locacion.imagen}" alt="${locacion.nombre}"><br>`;
+
+        const botonAgregar = document.createElement("button");
+        botonAgregar.classList.add("boton-agregar");
+        botonAgregar.innerText = "Agregar";
+       
+        botonAgregar.addEventListener("click", () => {
+         CalculoCocina(locacion);
+        })
+
+        divCocina.appendChild(botonAgregar);
+        locacionesContenedor.appendChild(divCocina);
+
+        }
+    }
+
+    
+}
+
 function CalculoHabitación(locacion){
 
     var nuevaHabitacion = new Habitación();     
@@ -343,7 +416,7 @@ function CalculoHabitación(locacion){
     divHabitación.classList.add("habitacion");
 
     divHabitación.innerHTML =`
-    <h3>Cantidad de M2: <input type="text" id='m2'/><h3>`;
+    <h3>Ingrese la cantidad de metros cuadrados para la Hab n° ${nuevaHabitacion.nombre}: <input type="number"  min="1" pattern="^[0-9]+"  id='m2'/>m2<h3>`;
 
     locacionesContenedor.appendChild(divHabitación);
 
@@ -504,7 +577,7 @@ function CalculoBaño(locacion){
     divBaño.classList.add("baño");
 
     divBaño.innerHTML =`
-    <h3>Cantidad de M2: <input type="text" id='m2'/><h3>`;
+    <h3>Ingrese la cantidad de metros cuadrados para el Baño n°${nuevoBaño.nombre} : <input type="text" min="1" pattern="^[0-9]+" id='m2'/>m2<h3>`;
 
     locacionesContenedor.appendChild(divBaño);
     const M2Input = document.getElementById('m2')
@@ -531,7 +604,7 @@ function CalculoCocina(locacion){
     divCocina.classList.add("cocina");
 
     divCocina.innerHTML =`
-    <h3>Cantidad de M2: <input type="text" id='m2'/><h3>`;
+    <h3>Ingrese la cantidad de metros cuadrados para la Cocina n°: <input type="text" pattern="^[0-9]+" id='m2'/>m2<h3>`;
 
     locacionesContenedor.appendChild(divCocina);
     const M2Input = document.getElementById('m2')
@@ -722,77 +795,6 @@ function costoPlomería(locacion){
 
 
 
-function ListarLocaciones(){
-
-    const locacionesContenedor = document.querySelector(".locacionesRoot");
-    locacionesContenedor.innerHTML ="";
-
-    for (const locacion of locaciones) {
-        
-        if(locacion.tipo == 'Habitación'){
-            
-        const divHabitación = document.createElement("div");
-        divHabitación.classList.add("habitacion");   
-
-        divHabitación.innerHTML = `<h2>Habitaciones:</h2>
-        <img src="${locacion.imagen}" alt="${locacion.nombre}"><br>`;
-
-        const botonAgregar = document.createElement("button");
-        botonAgregar.classList.add("boton-agregar");
-        botonAgregar.innerText = "Agregar";
-       
-        botonAgregar.addEventListener("click", () => {
-         CalculoHabitación(locacion);
-        })
-
-        divHabitación.appendChild(botonAgregar);
-        locacionesContenedor.appendChild(divHabitación);
-        }
-
-       
-        if(locacion.tipo == 'Baño'){
-        
-        const divBaño = document.createElement("div");
-        divBaño.classList.add("baño");     
-        divBaño.innerHTML = `<h2>Baños:</h2>
-        <img src="${locacion.imagen}" alt="${locacion.nombre}"><br>`;
-
-        const botonAgregar = document.createElement("button");
-        botonAgregar.classList.add("boton-agregar");
-        botonAgregar.innerText = "Agregar";
-       
-        botonAgregar.addEventListener("click", () => {
-         CalculoBaño(locacion);
-        })
-
-        divBaño.appendChild(botonAgregar);
-        locacionesContenedor.appendChild(divBaño);
-
-        }
-    
-        if(locacion.tipo == 'Cocina'){
-
-        const divCocina = document.createElement("div");
-        divCocina.classList.add("cocina");
-        divCocina.innerHTML = `<h2>Cocinas:</h2>
-        <img src="${locacion.imagen}" alt="${locacion.nombre}"><br>`;
-
-        const botonAgregar = document.createElement("button");
-        botonAgregar.classList.add("boton-agregar");
-        botonAgregar.innerText = "Agregar";
-       
-        botonAgregar.addEventListener("click", () => {
-         CalculoCocina(locacion);
-        })
-
-        divCocina.appendChild(botonAgregar);
-        locacionesContenedor.appendChild(divCocina);
-
-        }
-    }
-
-    
-}
 
 function ListarLocacionesTotales(){
     console.log('***** Costos de Locación/es:');
