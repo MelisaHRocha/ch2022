@@ -196,7 +196,17 @@ function ListarLocaciones(){
          CalculoCocina(locacion);
         })
 
+        const botonListar = document.createElement("button");
+        botonListar.classList.add("boton-listar");
+        botonListar.innerText = "Listar";
+       
+        botonListar.addEventListener("click", () => {
+         Listar(locacion);
+        })
+
+
         divCocina.appendChild(botonAgregar);
+        divCocina.appendChild(botonListar);
         locacionesContenedor.appendChild(divCocina);
 
         }
@@ -602,7 +612,6 @@ function Listar(locacion){
     divBaños.innerHTML = "";
     locacionesContenedor.appendChild(divBaños);
    
-
         for (const baño of baños){
 
             const divBaño = document.createElement("div");
@@ -619,6 +628,36 @@ function Listar(locacion){
   
             divBaño.appendChild(botonBaño);     
             divBaños.appendChild(divBaño);    
+        }
+
+    }
+
+    if (locacion.tipo == "Cocina"){
+        locacionesContenedor.innerHTML = `
+    <h2>Cocinas: </h2>
+    <img src="${locacion.imagen}" alt="${locacion.nombre}">`
+
+    const divCocinas = document.createElement("div");
+    divCocinas.classList.add("ListaCocinas");
+    divCocinas.innerHTML = "";
+    locacionesContenedor.appendChild(divCocinas);
+   
+        for (const cocina of cocinas){
+
+            const divCocina = document.createElement("div");
+            divCocina.classList.add("cocinas");
+
+            const botonCocina = document.createElement("button");
+            botonCocina.classList.add("btn_dormitorio");
+            botonCocina.innerHTML = `<i class="fa-solid fa-kitchen-set"></i>
+            <h5 class="leter">Cocina.${cocina.nombre}</h5>`;
+
+            botonCocina.addEventListener("click", () => {
+                DetalleLocación(locacionesContenedor,cocina,locacion);
+            })
+  
+            divCocina.appendChild(botonCocina);     
+            divCocinas.appendChild(divCocina);    
         }
 
     }
@@ -675,6 +714,30 @@ function DetalleLocación(locacionesContenedor, tipoLocacion, locacion){
     crearBotonVolver(divBañoDetalle);
     crearBotonEditar(tipoLocacion,divBañoDetalle);
     crearBotonEliminar(tipoLocacion,divBañoDetalle);
+
+    }
+
+    if (locacion.tipo = "Cocina"){
+        locacionesContenedor.innerHTML = `
+    <h2>Detalle de costos para la  Cocina n°: ${tipoLocacion.nombre} </h2>
+    <img src="${locacion.imagen}" alt="${locacion.nombre}">`
+
+    const divCocinaDetalle = document.createElement("div");
+    divCocinaDetalle.classList.add("CocinaDetalle");
+    divCocinaDetalle.innerHTML = "";
+
+    divCocinaDetalle.innerHTML +=`
+        Cantidad de M2: ${tipoLocacion.M2} m2. <br> 
+        Costo de material de construcción: ${tipoLocacion.costoMaterialConstrucción.toFixed(2)} $.<br> 
+        Costo de mano de obra de Construcción: ${tipoLocacion.costoManoObraConstrucción} $.<br> 
+        Costo de Total de Instalación Eléctrica: ${tipoLocacion.costoInstalaciónEléctrica.toFixed(2)} $.<br> 
+        Costo Total de construcción: ${tipoLocacion.costoTotal.toFixed(2)} $.</p>`;
+        
+    locacionesContenedor.appendChild(divCocinaDetalle);
+
+    crearBotonVolver(divCocinaDetalle);
+    crearBotonEditar(tipoLocacion,divCocinaDetalle);
+    crearBotonEliminar(tipoLocacion,divCocinaDetalle);
 
     }
 
@@ -773,10 +836,10 @@ function crearBotonEditar(locacion,divLocacion){
     botonEditar.classList.add("boton-editar");
     botonEditar.innerHTML =`<i class="fa-solid fa-pen"></i>`;
     botonEditar.addEventListener("click",() =>{
-        EditarLocacionB(locacion);
+        EditarLocacion(locacion);
         } 
-        )
-        divLocacion.appendChild(botonEditar);
+    )
+    divLocacion.appendChild(botonEditar);
 }
 
 function crearBotonEliminar(locacion,divLocacion){
@@ -784,13 +847,13 @@ function crearBotonEliminar(locacion,divLocacion){
     botonEliminar.classList.add("boton-eliminar");
     botonEliminar.innerHTML =`<i class="fa-solid fa-trash"></i>`;
     botonEliminar.addEventListener("click",() =>{
-        EliminarLocacionB(locacion);
+        EliminarLocacion(locacion);
         } 
         )
         divLocacion.appendChild(botonEliminar);
 }
 
-function EliminarLocacionB(locacion){
+function EliminarLocacion(locacion){
 
     let  superLocacion = locaciones.find((lo) => lo.tipo == locacion.tipo);
 
@@ -816,7 +879,7 @@ function EliminarLocacionB(locacion){
         
         if(superLocacion.tipo == "Baño"){
      
-        console.log("Numero de Baño a Editar es " +locacion.nombre)
+        console.log("Numero de Baño a Eliminar es " +locacion.nombre)
         let  bañoAEliminar = baños.find((bñ) => bñ.nombre == locacion.nombre);
         
         const locacionesContenedor = document.querySelector(".locacionesRoot");
@@ -837,27 +900,19 @@ function EliminarLocacionB(locacion){
     
         if(superLocacion.tipo == "Cocina"){
     
-        console.log("Numero de Cocina a Editar es " +locacion.nombre)
-        let  cocinaAEditar = cocinas.find((co) => co.nombre == locacion.nombre);
+        console.log("Numero de Cocina a Eliminar es " +locacion.nombre)
+        let  cocinaAEliminar = cocinas.find((co) => co.nombre == locacion.nombre);
     
         const locacionesContenedor = document.querySelector(".locacionesRoot");
         locacionesContenedor.innerHTML = "";
         
-        locacionesContenedor.innerHTML = `
-        <h2>Cocina: ${cocinaAEditar.nombre}</h2>
-        <img src="${superLocacion.imagen}" alt="${cocinaAEditar.nombre}">`
-        
-        const divBaño = document.createElement("div");
-        divBaño.classList.add("baño");
-    
-        divBaño.innerHTML =`
-        <h3>Cantidad de M2: <input type="text" id='m2'/><h3>`;
-    
-        locacionesContenedor.appendChild(divBaño);
-    
-        const M2Input = document.getElementById('m2')
-    
-        calcularCostoLocación(M2Input,divBaño,cocinaAEditar);
+        let respuestaEliminar = confirm("Esta seguro que desea eliminar la Cocina n°: " +cocinaAEliminar.nombre + "?")
+
+        respuestaEliminar && Eliminado(cocinaAEliminar)
+
+        respuestaEliminar && ActualizarCamioncito();
+
+        ListarLocaciones();
     
         }
 
@@ -873,6 +928,11 @@ function Eliminado(locacionAEliminar){
         baños.splice(baños.indexOf(locacionAEliminar),1);
         alert("Usted ha eliminado el Baño n°: " + locacionAEliminar.nombre);
     }
+
+    if (locacionAEliminar.tipo =="Cocina"){
+        cocinas.splice(cocinas.indexOf(locacionAEliminar),1);
+        alert("Usted ha eliminado la Cocina n°: " + locacionAEliminar.nombre);
+    }
     
 
 }
@@ -887,7 +947,7 @@ function ActualizarCamioncito(){
     pintarCamioncito(contLocacionesJson);
 }
 
-function EditarLocacionB(locacion){
+function EditarLocacion(locacion){
 
     let  superLocacion = locaciones.find((lo) => lo.tipo == locacion.tipo);
 
