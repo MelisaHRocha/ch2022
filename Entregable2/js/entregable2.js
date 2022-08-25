@@ -184,7 +184,10 @@ function ListarLocaciones(){
 
     const locacionesContenedor = document.querySelector(".locacionesRoot");
     locacionesContenedor.innerHTML ="";
-    
+
+    const habitacionesJson = localStorage.getItem('Habitaciones')
+    const bañosJson = localStorage.getItem('Baños')
+    const cocinasJson = localStorage.getItem('Cocinas')
 
     for (const locacion of locaciones) {
         
@@ -201,8 +204,11 @@ function ListarLocaciones(){
         botonAgregar.innerText = "Agregar";
        
         botonAgregar.addEventListener("click", () => {
-         VerificarStorage(locacion.tipo);
-         CalculoHabitación(locacion);
+         if (!(habitacionesJson === null) && habitaciones.length == 0){
+            VerificarStorage(locacion);     
+         } else {
+            CalculoHabitación(locacion) 
+        }           
         })
 
         const botonListar = document.createElement("button");
@@ -232,8 +238,9 @@ function ListarLocaciones(){
         botonAgregar.innerText = "Agregar";
        
         botonAgregar.addEventListener("click", () => {
-         VerificarStorage(locacion.tipo);
-         CalculoBaño(locacion);
+            if (!(bañosJson === null) && baños.length == 0){
+                VerificarStorage(locacion);     
+             } else {CalculoBaño(locacion)}    
         })
 
         const botonListar = document.createElement("button");
@@ -263,8 +270,9 @@ function ListarLocaciones(){
         botonAgregar.innerText = "Agregar";
        
         botonAgregar.addEventListener("click", () => {
-         VerificarStorage(locacion.tipo);
-         CalculoCocina(locacion);
+            if (!(cocinasJson === null) && cocinas.length == 0 ){
+                VerificarStorage(locacion);     
+             } else { CalculoCocina(locacion);}    
         })
 
         const botonListar = document.createElement("button");
@@ -286,20 +294,19 @@ function ListarLocaciones(){
     
 }
 
-function VerificarStorage(locacionTipo){
+function VerificarStorage(locacion){
     var tipo;
     const habitacionesJson = localStorage.getItem('Habitaciones')
     const bañosJson = localStorage.getItem('Baños')
     const cocinasJson = localStorage.getItem('Cocinas')
+  
+    console.log("Verificar Storage"+(habitacionesJson === null));
+    console.log("Locacion", locacion.tipo)
 
-    
-    console.log("Verificar Storage"+(habitacionesJson === null))
-
-    if (locacionTipo == "Habitación" && !(habitacionesJson === null) && habitaciones.length == 0){
+    if (locacion.tipo == "Habitación" && !(habitacionesJson === null) && habitaciones.length == 0){
     const ArrayHabitacionesJson = JSON.parse(habitacionesJson)
 
     let respuesta;
-    //respuesta = '1';
 
     ArrayHabitacionesJson.length > 0 &&  
     
@@ -313,23 +320,18 @@ function VerificarStorage(locacionTipo){
         if (result.isConfirmed) {
           Swal.fire('Cargar mas habitaciones!', '', 'success')
           respuesta = '1';
-          console.log(+respuesta);
-          tipo = 'Habitación';
-          VerStorage(respuesta, tipo);
+          VerStorage(respuesta, locacion);
         } else if (result.isDenied) {
           respuesta = '0';
-          console.log(+respuesta);
           Swal.fire('Cargar Habitación a nuevo camión', '', 'info')
-          tipo = 'Habitación';
-          VerStorage(respuesta, tipo);
+          VerStorage(respuesta, locacion);
         }
       })) 
 
-    }
+    } 
 
-    if (locacionTipo == "Baño" &&!(bañosJson === null) && baños.length == 0){
+    if (locacion.tipo == "Baño" &&!(bañosJson === null) && baños.length == 0){
         const ArrayBañosJson = JSON.parse(bañosJson)
-        console.log(+ ArrayBañosJson)
         let respuesta;
         ArrayBañosJson.length > 0 &&  
         
@@ -343,22 +345,18 @@ function VerificarStorage(locacionTipo){
             if (result.isConfirmed) {
               Swal.fire('Cargar mas baños a tu casa!', '', 'success')
               respuesta = '1';
-              console.log(+respuesta);
-              tipo = 'Baño';
-              VerStorage(respuesta, tipo);
+              VerStorage(respuesta, locacion);
             } else if (result.isDenied) {
               respuesta = '0';
-              console.log(+respuesta);
               Swal.fire('Cargar Baño a nuevo camión', '', 'info')
-              tipo = 'Baño';
-              VerStorage(respuesta, tipo);
+              VerStorage(respuesta, locacion);
             }
           })) 
-    }
 
-    if (locacionTipo == "Cocina" && !(cocinasJson === null) && cocinas.length == 0){
+    } 
+
+    if (locacion.tipo == "Cocina" && !(cocinasJson === null) && cocinas.length == 0){
         const ArrayCocinasJson = JSON.parse(cocinasJson)
-        console.log(+ ArrayCocinasJson)
         let respuesta;
         ArrayCocinasJson.length > 0 && 
         
@@ -372,25 +370,21 @@ function VerificarStorage(locacionTipo){
             if (result.isConfirmed) {
               Swal.fire('Cargar mas cocinas a tu casa!', '', 'success')
               respuesta = '1';
-              console.log(+respuesta);
-              tipo = 'Cocina';
-              VerStorage(respuesta, tipo);
+              VerStorage(respuesta, locacion);
             } else if (result.isDenied) {
               respuesta = '0';
-              console.log(+respuesta);
               Swal.fire('Cargar Cocina a nuevo camión', '', 'info')
               tipo = 'Cocina';
-              VerStorage(respuesta, tipo);
+              VerStorage(respuesta, locacion);
             }
           })) 
-    }  
+    }
 
 }
 
-function VerStorage(respuesta,tipo){
+function VerStorage(respuesta,locacion){
 
-    if (respuesta == '1' && tipo == 'Habitación'){
-        console.log('carritoo');
+    if (respuesta == '1' && locacion.tipo == 'Habitación'){
         const habitacionesJson = localStorage.getItem('Habitaciones')
         const habitacionesObject = JSON.parse(habitacionesJson)
         console.log(habitacionesObject)
@@ -399,49 +393,50 @@ function VerStorage(respuesta,tipo){
         for (const hj of habitacionesObject) {
             habitaciones.push(hj);       
         }
-    } else if (respuesta == '0'){
+        CalculoHabitación(locacion);
+    } else if (respuesta == '0' && locacion.tipo == 'Baño'){
         localStorage.clear()
         limpiarCamioncito()
+        CalculoHabitación(locacion);
     }
 
-
-    if (respuesta == '1' && tipo == 'Baño'){
-        console.log('carritoo');
+    if (respuesta == '1' && locacion.tipo == 'Baño'){
         const bañosJson = localStorage.getItem('Baños')
         const bañosObject = JSON.parse(bañosJson)
         console.log(bañosObject)
         console.log(bañosJson)
    
- 
         for (const bñ of bañosObject) {
             baños.push(bñ);           
         }
-
+        CalculoBaño(locacion);
+    } else if (respuesta == '0' && locacion.tipo == 'Baño'){
+        localStorage.clear()
+        limpiarCamioncito()
+        CalculoBaño(locacion);
     }
 
-
-    if (respuesta == '1' && tipo == 'Cocina'){
-        console.log('carritoo');
+    if (respuesta == '1' && locacion.tipo == 'Cocina'){
         const cocinasJson = localStorage.getItem('Cocinas')
         const cocinasObject = JSON.parse(cocinasJson)
         console.log(cocinasObject)
         console.log(cocinasJson)
    
- 
         for (const co of cocinasObject) {
             cocinas.push(co);           
         }
-
-    }
-    
-
+        CalculoCocina(locacion);
+    } else if (respuesta == '0' && locacion.tipo == 'Cocina'){
+        localStorage.clear()
+        limpiarCamioncito()
+        CalculoCocina(locacion);
+    }   
 }
 
 function limpiarCamioncito(){
     const carrito = document.querySelector(".btn_menu")
     carrito.innerHTML = `<i class="fa-solid fa-truck"></i>`
 }
-
 
 
 function pintarCamioncito (contLocacionesJson){  
@@ -562,8 +557,6 @@ function mostrarStorage(tipo){
         console.log("Mostrando Storage")
     const habitacionesJson = localStorage.getItem('Habitaciones')
 
-    console.log( "Muestro las habitaciones que tengo"+habitacionesJson)
-
     console.log(JSON.parse(habitacionesJson));
     const obhab = JSON.parse(habitacionesJson)
     
@@ -577,7 +570,6 @@ function mostrarStorage(tipo){
         } else {
             let contadorL = parseInt(localStorage.getItem('contLocaciones'))
             contadorL++
-            console.log("ContadorL ", +contadorL)
             localStorage.setItem('contLocaciones', contadorL)
             const contLocacionesJson = localStorage.getItem('contLocaciones')
         
@@ -594,14 +586,12 @@ function mostrarStorage(tipo){
 
 
     if (tipo== "Baño"){
-        console.log("Mostrando Storage")
 
     const bañosJson = localStorage.getItem('Baños')
 
     const obbañ = JSON.parse(bañosJson)
     
     if(!(obbañ===null)){
-    console.log(JSON.parse(bañosJson))
 
         if (baños.length == 0){
             const contLocacionesJson = localStorage.getItem('contLocaciones')   
@@ -610,7 +600,6 @@ function mostrarStorage(tipo){
         } else {
             let contadorL = parseInt(localStorage.getItem('contLocaciones'))
             contadorL++
-            console.log("ContadorL ", +contadorL)
             localStorage.setItem('contLocaciones', contadorL)
             const contLocacionesJson = localStorage.getItem('contLocaciones')
         
@@ -628,14 +617,12 @@ function mostrarStorage(tipo){
     
 
     if (tipo== "Cocina"){
-        console.log("Mostrando Storage")
 
     const cocinasJson = localStorage.getItem('Cocinas')
 
     const obcoc = JSON.parse(cocinasJson)
     
     if(!(obcoc===null)){
-    console.log(JSON.parse(cocinasJson))
 
         if (cocinas.length == 0){
             const contLocacionesJson = localStorage.getItem('contLocaciones')   
@@ -644,7 +631,6 @@ function mostrarStorage(tipo){
         } else {
             let contadorL = parseInt(localStorage.getItem('contLocaciones'))
             contadorL++
-            console.log("ContadorL ", +contadorL)
             localStorage.setItem('contLocaciones', contadorL)
             const contLocacionesJson = localStorage.getItem('contLocaciones')
         
@@ -671,7 +657,6 @@ function mostrarStorageLocaciones(){
     const obbañ = JSON.parse(bañosJson)
 
     if((!(obhab===null)) || (!(obbañ===null)) ){
-        console.log(JSON.parse(bañosJson))
     
             if (baños.length == 0 && habitaciones.length == 0){
                 const contLocacionesJson = localStorage.getItem('contLocaciones')   
@@ -680,7 +665,6 @@ function mostrarStorageLocaciones(){
             } else {
                 let contadorL = parseInt(localStorage.getItem('contLocaciones'))
                 contadorL++
-                console.log("ContadorL ", +contadorL)
                 localStorage.setItem('contLocaciones', contadorL)
                 const contLocacionesJson = localStorage.getItem('contLocaciones')
             
@@ -988,14 +972,11 @@ function EliminarLocacion(locacion){
     let  superLocacion = locaciones.find((lo) => lo.tipo == locacion.tipo);
 
     if(superLocacion.tipo == "Habitación"){
-
-        console.log("Numero de Habitacion a Eliminar es " +locacion.nombre)
+      
         let  habitacionAEliminar = habitaciones.find((hb) => hb.nombre == locacion.nombre);
-        
-    
+           
         const locacionesContenedor = document.querySelector(".locacionesRoot");
         locacionesContenedor.innerHTML = "";
-
 
         let respuestaEliminar = confirm("Esta seguro que desea eliminar la Habitación n°: " +habitacionAEliminar.nombre + "?")
 
@@ -1008,8 +989,7 @@ function EliminarLocacion(locacion){
         }else 
         
         if(superLocacion.tipo == "Baño"){
-     
-        console.log("Numero de Baño a Eliminar es " +locacion.nombre)
+
         let  bañoAEliminar = baños.find((bñ) => bñ.nombre == locacion.nombre);
         
         const locacionesContenedor = document.querySelector(".locacionesRoot");
@@ -1030,7 +1010,6 @@ function EliminarLocacion(locacion){
     
         if(superLocacion.tipo == "Cocina"){
     
-        console.log("Numero de Cocina a Eliminar es " +locacion.nombre)
         let  cocinaAEliminar = cocinas.find((co) => co.nombre == locacion.nombre);
     
         const locacionesContenedor = document.querySelector(".locacionesRoot");
@@ -1070,7 +1049,6 @@ function Eliminado(locacionAEliminar){
 function ActualizarCamioncito(){
     let contadorL = parseInt(localStorage.getItem('contLocaciones'))
     contadorL--
-    console.log("ContadorL ", +contadorL)
     localStorage.setItem('contLocaciones', contadorL)
     const contLocacionesJson = localStorage.getItem('contLocaciones')
 
@@ -1241,9 +1219,6 @@ function ListarLocacionesTotales(){
 
     for (const locacion of locaciones) {
         if(locacion.tipo == 'Habitación' && locacion.cantidad > 0){
-             
- //       locacionesContenedor.innerHTML += `<h2>Habitaciones:</h2>`;
-
 
             for (const habitacion of habitaciones){
 
@@ -1251,53 +1226,43 @@ function ListarLocacionesTotales(){
                 tr1.innerHTML += `
                 <td>Hab.${habitacion.nombre}</td>
                 <td>${habitacion.M2}</td>
-                <td>${habitacion.costoTotal}</td>`
+                <td>${habitacion.costoTotal} $</td>`
                 tbody.appendChild(tr1);
       
             }
 
- //           tbody.appendChild(tr1);
-
         }
+;
 
- /*       if(locacion.tipo == 'Baño' && locacion.cantidad > 0 ){
+       if(locacion.tipo == 'Baño' && locacion.cantidad > 0 ){
 
-        locacionesContenedor.innerHTML += `<h2>Baños:</h2>`;
-        const divBaño = document.createElement("div");
-        divBaño.classList.add("baño");
+        for (const baño of baños){
 
-            for (const baño of baños){
-
-                divBaño.innerHTML += `
-                <i class="fa-solid fa-bed"></i>
-                <h5 class="leter">Baño.${baño.nombre}</h5>
-                <h3> Baño: ${baño.nombre} de <strong>${baño.M2}</strong> m2 tiene un costo de ${baño.costoTotal.toFixed(2)} $</h3>`              
-
-            }
-
-            locacionesContenedor.appendChild(divBaño);
+            var tr1 = document.createElement("tr");
+            tr1.innerHTML += `
+            <td>Baño.${baño.nombre}</td>
+            <td>${baño.M2}</td>
+            <td>${baño.costoTotal} $</td>`
+            tbody.appendChild(tr1);
+  
+        }
 
         }
 
         if(locacion.tipo == 'Cocina' && locacion.cantidad > 0){
 
-        var cocinasCont = document.getElementById("cocinas");
-        cocinasCont.innerHTML = `<h2>Cocinas de tu Casa:</h2>`;
-        const divCocina = document.createElement("div");
-        divCocina.classList.add("cocina");
-
             for (const cocina of cocinas){
-            
-                divCocina.innerHTML += `
-                <i class="fa-solid fa-bed"></i>
-                <h5 class="leter">Cocina.${cocina.nombre}</h5>
-                <h3> Cocina: ${cocina.nombre} de <strong>${cocina.M2}</strong> m2 tiene un costo de ${cocina.costoTotal.toFixed(2)} $</h3>`     
-       
+
+                var tr1 = document.createElement("tr");
+                tr1.innerHTML += `
+                <td>Cocina.${cocina.nombre}</td>
+                <td>${cocina.M2}</td>
+                <td>${cocina.costoTotal} $</td>`
+                tbody.appendChild(tr1);
+      
             }
 
-            locacionesContenedor.appendChild(divCocina);
-
-        }*/
+        }
     }
 
     
@@ -1308,6 +1273,8 @@ function ListarLocacionesTotales(){
     Presupuesto.appendChild(tablaPresupuesto);
 
     locacionesContenedor.appendChild(Presupuesto);
+    
+    crearBotonVolver(Presupuesto);
 
 
  /*   var costoTotal = 0; 
