@@ -10,66 +10,15 @@ var CPPBC = 1;  /* Cantidad de Plomeros en promedio por baño o cocina.*/
 
 const suma = (a,b) =>  a + b;
 const multiplica = (a,b) => a * b;
-
-
-function costoManoObra(costos, recurso){
-    let recursoDet = costos.find((co)=>co.nombreRecurso == recurso)
-    console.log(+recursoDet.costo20M2/20)
-    return (recursoDet.costo20M2/20)
-}
-
-async function costoManoObra20M2(recurso){
-    const res = await fetch( 'data/costosManoDeObra.json' )
-    .then( res => res.json())
-    .then( data => {
-        console.log(data);
-      //  costoManoObra2=costoManoObra(data, recurso);
-        data=costoManoObra(data, recurso);
-     //   console.log("Mano Obra4" + costoManoObra2);
-     console.log("Dataaa" + data);
-       
-       
-    })
-    return res
-}
-
-
-//let ve = await costoManoObra20M2('Albañil');
-var  de = 0 ;
-
-const Tata =  costoManoObra20M2('Albañil');
-
-
-
-console.log("Tata", +Tata);
-
-
-
-
-const costoAlbañilM2 = a => a*12.5; /* Un albañil cobra 250 $ por cada 20 M2.*/
-
-(async () => {
-    console.log("aca toyy", await costoManoObra20M2('Albañil'));
-    })();
-
-    
-console.log("Aquii", +costoAlbañilM2(20));
-const costoElectM2 = a => a*costoManoObra20M2('Electricista');    /* Un electricista cobra 130 $ por cada 20 M2.*/
-const costoPlomM2 = a => a*costoManoObra20M2('Plomero');     /* Un plomero cobra 140 $ por cada 20 M2.*/
+const costoAlbañilM2 = a => a*12.5;  /* Un albañil cobra 250 $ por cada 20 M2.*/
+const costoElectM2 = a => a*6.5;    /* Un electricista cobra 130 $ por cada 20 M2.*/
+const costoPlomM2 = a => a*7;     /* Un plomero cobra 140 $ por cada 20 M2.*/
 
 const habitaciones = [];
 const baños = [];
 const cocinas = [];
 const locaciones = [];
 var contLocaciones = 0
-
-costoManoObra20M2('Albañil');
-console.log("GF", +costoManoObra20M2('Albañil'));
-costoManoObra20M2('Electricista'); 
-costoManoObra20M2('Plomero');  
-
-
-
 
 class Locación{
     constructor(tipo,cantidad,imagen){
@@ -136,6 +85,43 @@ ListarLocaciones();
 
 CalcularPresupuesto();
 
+MostrarCostosFijos();
+
+
+function MostrarCostosFijos(){
+    let costosFijos = document.getElementById("cfijos")
+    costosFijos.addEventListener("click", () => {
+        CostosFijos();
+       })
+   
+}
+
+function CostosFijos(){
+
+    fetch( 'data/costosManoDeObra.json' )
+    .then( res => res.json())
+    .then( data => {
+        console.log(data);
+        costoManoObra(data);          
+    })   
+    
+    function costoManoObra(costos){
+        const locacionesContenedor = document.querySelector(".locacionesRoot");
+        locacionesContenedor.innerHTML = "";
+
+        costos.forEach(c => {
+            const costo = document.createElement('li')
+            costo.innerHTML = "";
+            costo.innerHTML +=`
+            Costo de ${c.nombreRecurso} : ${c.costo20M2}$.`
+            locacionesContenedor.appendChild(costo)    
+            
+        });            
+    }
+   
+}
+
+
 function CalcularPresupuesto(){
     let presupuesto = document.getElementById("presup")
 
@@ -144,6 +130,40 @@ function CalcularPresupuesto(){
        })
     
 }
+
+function MostrarCostosFijos(){
+    let costosFijos = document.getElementById("cfijos")
+    costosFijos.addEventListener("click", () => {
+        CostosFijos();
+       })
+   
+}
+
+function CostosFijos(){
+
+    fetch( 'data/costosManoDeObra.json' )
+    .then( res => res.json())
+    .then( data => {
+        console.log(data);
+        costoManoObra(data);          
+    })   
+    
+    function costoManoObra(costos){
+        const locacionesContenedor = document.querySelector(".locacionesRoot");
+        locacionesContenedor.innerHTML = "";
+
+        costos.forEach(c => {
+            const costo = document.createElement('li')
+            costo.innerHTML = "";
+            costo.innerHTML +=`
+            Costo de ${c.nombreRecurso} : ${c.costo20M2}$.`
+            locacionesContenedor.appendChild(costo)    
+            
+        });            
+    }
+   
+}
+
 
 /** Costos de Presupuesto Total */
 function  CálculoPresupuestoTotal(){
