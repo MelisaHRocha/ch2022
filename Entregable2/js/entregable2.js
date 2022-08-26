@@ -204,7 +204,7 @@ function ListarLocaciones(){
         botonAgregar.innerText = "Agregar";
        
         botonAgregar.addEventListener("click", () => {
-         if (!(habitacionesJson === null) && habitaciones.length == 0){
+         if (!(habitacionesJson === null) && habitaciones.length == 0 && JSON.parse(habitacionesJson).length == 0){
             VerificarStorage(locacion);     
          } else {
             CalculoHabitación(locacion) 
@@ -238,7 +238,7 @@ function ListarLocaciones(){
         botonAgregar.innerText = "Agregar";
        
         botonAgregar.addEventListener("click", () => {
-            if (!(bañosJson === null) && baños.length == 0){
+            if (!(bañosJson === null) && baños.length == 0 && !JSON.parse(bañosJson).length == 0){
                 VerificarStorage(locacion);     
              } else {CalculoBaño(locacion)}    
         })
@@ -270,7 +270,8 @@ function ListarLocaciones(){
         botonAgregar.innerText = "Agregar";
        
         botonAgregar.addEventListener("click", () => {
-            if (!(cocinasJson === null) && cocinas.length == 0 ){
+            if (!(cocinasJson === null) && cocinas.length == 0 && !JSON.parse(cocinasJson).length == 0 ){
+                console.log()
                 VerificarStorage(locacion);     
              } else { CalculoCocina(locacion);}    
         })
@@ -300,7 +301,7 @@ function VerificarStorage(locacion){
     const bañosJson = localStorage.getItem('Baños')
     const cocinasJson = localStorage.getItem('Cocinas')
   
-    console.log("Verificar Storage"+(habitacionesJson === null));
+    console.log("Verificar Storage", +(habitacionesJson === null));
     console.log("Locacion", locacion.tipo)
 
     if (locacion.tipo == "Habitación" && !(habitacionesJson === null) && habitaciones.length == 0){
@@ -330,7 +331,7 @@ function VerificarStorage(locacion){
 
     } 
 
-    if (locacion.tipo == "Baño" &&!(bañosJson === null) && baños.length == 0){
+    if (locacion.tipo == "Baño" && !(bañosJson === null) && baños.length == 0){
         const ArrayBañosJson = JSON.parse(bañosJson)
         let respuesta;
         ArrayBañosJson.length > 0 &&  
