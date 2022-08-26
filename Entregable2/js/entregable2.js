@@ -204,7 +204,7 @@ function ListarLocaciones(){
         botonAgregar.innerText = "Agregar";
        
         botonAgregar.addEventListener("click", () => {
-         if (!(habitacionesJson === null) && habitaciones.length == 0 && JSON.parse(habitacionesJson).length == 0){
+         if (!(habitacionesJson === null) && habitaciones.length == 0 && !JSON.parse(habitacionesJson).length == 0){
             VerificarStorage(locacion);     
          } else {
             CalculoHabitación(locacion) 
@@ -290,9 +290,7 @@ function ListarLocaciones(){
         locacionesContenedor.appendChild(divCocina);
 
         }
-    }
-
-    
+    }   
 }
 
 function VerificarStorage(locacion){
