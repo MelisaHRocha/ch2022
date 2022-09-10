@@ -1,0 +1,5 @@
+[
+    {"id":1, "nombreRecurso": "Albañil", "costo20M2": 250 },
+    {"id":2, "nombreRecurso": "Electricista", "costo20M2": 130},
+    {"id":3, "nombreRecurso": "Plomero", "costo20M2": 140}
+]
